@@ -1,0 +1,137 @@
+<div
+  class="attachments-container"
+  [class.clay-card]="!compact"
+  [class.attachments-container--compact]="compact"
+>
+  <!-- Cabeçalho -->
+  <header class="attachments-header" *ngIf="showHeader">
+    <div class="header-title-group">
+      <i class="fa-solid fa-paperclip header-icon"></i>
+      <h2 class="attachments-title">{{ title }}</h2>
+      <span class="attachments-badge" *ngIf="attachments().length > 0">
+        {{ attachments().length }}
+      </span>
+    </div>
+  </header>
+
+  <!-- Área de Upload (Drag & Drop) -->
+  <div
+    *ngIf="!readOnly"
+    class="upload-dropzone"
+    [class.drag-over]="isDragOver()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    <input
+      #fileInput
+      type="file"
+      multiple
+      class="hidden-file-input"
+      (change)="onFileSelected($event)"
+    />
+
+    <div class="dropzone-content" *ngIf="!uploading()">
+      <div class="dropzone-icon-circle">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+      </div>
+      <p class="dropzone-text">
+        <strong>{{ labels.dragDropHighlight }}</strong> {{ labels.dragDropText }}
+      </p>
+      <ds-button
+        type="button"
+        variant="secondary"
+        size="sm"
+        (click)="fileInput.click()"
+      >
+        <i class="fa-solid fa-folder-open"></i> {{ labels.selectFilesBtn }}
+      </ds-button>
+    </div>
+
+    <!-- Feedback durante upload -->
+    <div class="uploading-state" *ngIf="uploading()">
+      <i class="fa-solid fa-spinner fa-spin uploading-spinner"></i>
+      <span>{{ labels.uploadingText }}</span>
+    </div>
+  </div>
+
+  <!-- Loading ao buscar lista -->
+  <div class="loading-state" *ngIf="loading() && !uploading()">
+    <i class="fa-solid fa-circle-notch fa-spin"></i>
+    <span>{{ labels.loadingText }}</span>
+  </div>
+
+  <!-- Lista de Anexos -->
+  <div class="attachments-list" *ngIf="!loading() && attachments().length > 0">
+    <div *ngFor="let file of attachments()" class="attachment-card">
+      <div
+        class="file-icon-box"
+        [style.color]="getColorByExtension(file.name)"
+        (click)="openPreview(file)"
+        title="Clique para visualizar o arquivo"
+      >
+        <i [class]="getIconFile(file.name)"></i>
+      </div>
+
+      <div
+        class="file-info"
+        (click)="openPreview(file)"
+        title="Clique para visualizar o arquivo"
+      >
+        <span class="file-name" [title]="file.name">{{ file.name }}</span>
+        <span class="file-size">{{ formatFileSize(file.size) }}</span>
+      </div>
+
+      <div class="file-actions">
+        <button
+          type="button"
+          class="action-btn preview-btn"
+          title="Visualizar arquivo"
+          (click)="openPreview(file)"
+        >
+          <i class="fa-solid fa-eye"></i>
+        </button>
+
+        <button
+          type="button"
+          class="action-btn download-btn"
+          title="Baixar arquivo"
+          (click)="downloadFile(file)"
+        >
+          <i class="fa-solid fa-download"></i>
+        </button>
+
+        <button
+          *ngIf="!readOnly"
+          type="button"
+          class="action-btn delete-btn"
+          title="Excluir arquivo"
+          (click)="confirmDelete(file)"
+        >
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Confirmação de Deleção (CDK Overlay — appendToBody) -->
+<ds-confirm-dialog
+  [isOpen]="confirmDeleteModal().open"
+  [title]="labels.deleteConfirmTitle"
+  [message]="confirmDeleteMessage()"
+  [confirmText]="labels.deleteConfirmBtn"
+  [cancelText]="labels.deleteCancelBtn"
+  [loading]="deleting()"
+  iconClass="fa-solid fa-trash-can"
+  (confirm)="executeDelete()"
+  (cancel)="closeConfirmDelete()"
+></ds-confirm-dialog>
+
+<!-- Modal de Preview de Arquivo -->
+<ds-storage-file-preview
+  [open]="previewOpen()"
+  [file]="previewFile()"
+  (closed)="closePreview()"
+  (download)="downloadFile($event)"
+></ds-storage-file-preview>

@@ -1,0 +1,221 @@
+.preview-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
+}
+
+.preview-modal {
+  position: fixed;
+  top: 3vh;
+  left: 5vw;
+  right: 5vw;
+  bottom: 3vh;
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--storage-preview-bg, var(--clay-bg, #fff));
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(
+    135deg,
+    var(--storage-header-gradient-start, var(--clay-primary-500, #896ff4)) 0%,
+    var(--storage-header-gradient-end, var(--clay-primary-700, #5c46b6)) 100%
+  );
+  color: #fff;
+
+  .preview-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+
+    h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .preview-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .btn-download {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-size: 0.82rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.15);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+    }
+
+    .btn-close {
+      display: grid;
+      place-items: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+    }
+  }
+}
+
+.preview-body {
+  flex: 1;
+  overflow: auto;
+  background: #ffffff;
+  position: relative;
+}
+
+.preview-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 1rem;
+  color: var(--storage-text-muted, var(--clay-text-muted, #64748b));
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid rgba(137, 111, 244, 0.25);
+    border-top-color: var(--storage-primary, var(--clay-primary-500, #896ff4));
+    animation: spin 0.9s linear infinite;
+  }
+}
+
+.preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.preview-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 1rem;
+  background: #f8f9fa;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.preview-html-content {
+  padding: 2rem 2.5rem;
+  font-family: var(--clay-font-family, sans-serif);
+  line-height: 1.6;
+  color: #212529;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+
+  th,
+  td {
+    padding: 8px 12px;
+    border: 1px solid #dee2e6;
+  }
+
+  th {
+    background: #f1f3f5;
+    font-weight: 600;
+  }
+
+  pre {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: monospace;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .preview-body {
+    padding: 1rem 0.5rem;
+  }
+  .preview-html-content {
+    padding: 1.75rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.preview-unsupported {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 1rem;
+  color: #cbd5e1;
+  padding: 2rem;
+
+  i {
+    font-size: 3.5rem;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

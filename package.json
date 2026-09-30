@@ -1,0 +1,25 @@
+{
+  "name": "@detrasoft.com/storage",
+  "version": "0.1.0",
+  "description": "Upload, download e gestão de arquivos para o Storage-Server Detrasoft. Componente de anexos pronto para uso com drag-and-drop, preview e integração com @detrasoft.com/detra-ng.",
+  "keywords": [
+    "detrasoft",
+    "angular",
+    "storage",
+    "file-upload",
+    "attachments"
+  ],
+  "license": "UNLICENSED",
+  "sideEffects": false,
+  "peerDependencies": {
+    "@angular/common": ">=18.0.0 <21.0.0",
+    "@angular/core": ">=18.0.0 <21.0.0",
+    "@angular/cdk": ">=18.0.0 <21.0.0",
+    "@angular/platform-browser": ">=18.0.0 <21.0.0",
+    "@detrasoft.com/detra-ng": ">=0.6.23",
+    "rxjs": ">=7.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}
